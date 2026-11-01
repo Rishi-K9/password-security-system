@@ -1,0 +1,154 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Password Security System</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #eef2f7;
+            padding: 30px;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: auto;
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 3px 12px #ccc;
+        }
+
+        h1, h2 {
+            color: #245b91;
+        }
+
+        input {
+            width: 95%;
+            padding: 12px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        button {
+            background: #245b91;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .message {
+            padding: 10px;
+            background: #eef5ff;
+            border-radius: 5px;
+        }
+
+        .features {
+            background: #eef5ff;
+            padding: 15px;
+        }
+    </style>
+</head>
+
+<body>
+<div class="container">
+
+    <h1>Password Security System</h1>
+    <p>Secure Authentication Demonstration</p>
+
+    {% with messages = get_flashed_messages() %}
+        {% for message in messages %}
+            <p class="message">{{ message }}</p>
+        {% endfor %}
+    {% endwith %}
+
+    <hr>
+
+    <h2>User Registration</h2>
+
+    <form action="/register" method="POST">
+        <input name="username"
+               type="text"
+               placeholder="Enter username"
+               maxlength="50"
+               required>
+
+        <input name="password"
+               type="password"
+               id="registerPassword"
+               placeholder="Enter password"
+               required>
+
+        <p id="strength">Password Strength: Not entered</p>
+
+        <button type="submit">Register</button>
+    </form>
+
+    <hr>
+
+    <h2>User Login</h2>
+
+    <form action="/login" method="POST">
+        <input name="username"
+               type="text"
+               placeholder="Enter username"
+               required>
+
+        <input name="password"
+               type="password"
+               placeholder="Enter password"
+               required>
+
+        <button type="submit">Login</button>
+    </form>
+
+    <hr>
+
+    <h2>Security Features</h2>
+
+    <div class="features">
+        <ul>
+            <li>Password Strength Checking</li>
+            <li>Secure Password Hashing</li>
+            <li>Failed Login Tracking</li>
+            <li>Account Lockout</li>
+            <li>Authentication Logging</li>
+        </ul>
+    </div>
+
+</div>
+
+<script>
+const passwordInput = document.getElementById("registerPassword");
+
+passwordInput.addEventListener("input", function() {
+    const password = passwordInput.value;
+    let score = 0;
+
+    if (password.length >= 8) score++;
+    if (/[A-Z]/.test(password)) score++;
+    if (/[a-z]/.test(password)) score++;
+    if (/[0-9]/.test(password)) score++;
+    if (/[^A-Za-z0-9]/.test(password)) score++;
+
+    let strength = "Weak";
+
+    if (score >= 5) {
+        strength = "Strong";
+    } else if (score >= 3) {
+        strength = "Medium";
+    }
+
+    document.getElementById("strength").textContent =
+        "Password Strength: " + strength;
+});
+</script>
+
+</body>
+</html>
